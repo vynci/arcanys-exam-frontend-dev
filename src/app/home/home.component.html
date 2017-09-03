@@ -1,0 +1,209 @@
+<div class="container main-view">
+  <div class="row">
+    <div class="col col-sm-12" style="text-align:right;">
+      Login As:
+      <button class="btn btn-primary" (click)="switchUser('visitor')">Visitor</button>
+      <button class="btn btn-success" (click)="switchUser('admin')">Admin</button>
+      <a routerLink="/support"  class="btn btn-warning">Support</a>
+    </div>
+  </div>
+
+  <hr>  
+  <div class="row">
+      <div class="col col-sm-6" style="padding-top: 30px;"> 
+        <div class="row">
+          <div class="col col-sm-6">
+          <div class="form-group input-group">
+              <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchFilter.city">
+              <span class="input-group-btn"><button class="btn btn-secondary" type="button"><i class="glyphicon glyphicon-search"></i></button></span>
+            </div>
+            <div *ngIf="offices.length === 0">
+                <p>Loading...</p>
+              </div>            
+            <div *ngFor="let office of offices">
+                <div *ngIf="!isAdmin">
+                    <span>{{office.name}}</span><br>
+                    <span>{{office.city}}</span><br>
+                    <span>{{office.address1}}</span><br>
+                    <span>{{office.address2}}</span><br>
+                    <span>{{office.phone1}}</span><br>
+                    <span>{{office.phone2}}</span><br>
+                </div>
+
+                <div *ngIf="isAdmin">
+                    <input class="form-control" value="{{office.name}}" [(ngModel)]="office.name" name="name" placeholder="Name">
+                    <input class="form-control" value="{{office.city}}" [(ngModel)]="office.city" name="city" placeholder="City">
+                    <input class="form-control" value="{{office.address1}}" [(ngModel)]="office.address1" name="address1" placeholder="Address 1">
+                    <input class="form-control" value="{{office.address2}}" [(ngModel)]="office.address2" name="address2" placeholder="Addres 2">
+                    <input class="form-control" value="{{office.phone1}}" [(ngModel)]="office.phone1" name="phone1" placeholder="Phone 1">
+                    <input class="form-control" value="{{office.phone2}}" [(ngModel)]="office.phone2" name="phone2" placeholder="Phone 2"><br>
+                    <button type="submit" class="btn btn-info" (click)="editOffice(office)">Save</button>
+                    <button type="submit" class="btn btn-danger" (click)="deleteOffice(office)">Delete</button>                  
+                </div>
+                <br>
+            </div>
+
+            <div *ngIf="isAdmin" style="margin-top: 10px; margin-bottom:10px;">
+                <hr>
+                <button class="btn btn-success" (click)="addOffice()">Add Office</button>
+            </div>
+
+            <div *ngIf="isAddOffice && isAdmin" style="border: 1px solid gray; padding: 10px 10px;">
+              <form role="form">
+
+                <fieldset class="form-group">
+                    <input class="form-control" placeholder="Name" [(ngModel)]="newOffice.name" name="name">
+                </fieldset>      
+
+                <fieldset class="form-group">
+                  <input class="form-control" placeholder="Ciy" [(ngModel)]="newOffice.city" name="city">
+                </fieldset>
+              
+                <fieldset class="form-group">
+                  <input class="form-control" placeholder="Address 1" [(ngModel)]="newOffice.address1" name="address1">
+                </fieldset>
+                
+                <fieldset class="form-group">
+                  <input class="form-control" placeholder="Address 2" [(ngModel)]="newOffice.address2" name="address2">
+                </fieldset>  
+                
+                <fieldset class="form-group">
+                  <input class="form-control" placeholder="Phone 1" [(ngModel)]="newOffice.phone1" name="phone1">
+                </fieldset>
+                
+                <fieldset class="form-group">
+                  <input class="form-control" placeholder="Phone 2" [(ngModel)]="newOffice.phone2" name="phone2">
+                </fieldset>            
+
+                <button type="submit" class="btn btn-primary" (click)="saveOffice()">Save</button>
+                <button type="submit" class="btn btn-secondary" (click)="cancelAddOffice()">Cancel</button>
+              </form>  
+            </div>
+            
+          </div>
+          <div class="col col-sm-6">
+          
+          </div>        
+        </div>
+      </div>
+
+      <div class="col col-sm-6" style="padding-left: 100px;">
+
+        <div *ngIf="isAdmin">
+            <div>
+                <h1>Social Media Settings</h1>
+                <fieldset class="form-group">
+                    <input class="form-control" placeholder="Facebook" [(ngModel)]="socialMediaSettings.facebook.name" name="facebook">
+                </fieldset>      
+    
+                <fieldset class="form-group">
+                  <input class="form-control" placeholder="Twitter" [(ngModel)]="socialMediaSettings.twitter.name" name="twitter">
+                </fieldset>
+              
+                <fieldset class="form-group">
+                  <input class="form-control" placeholder="Instagram" [(ngModel)]="socialMediaSettings.instagram.name" name="instagram">
+                </fieldset>
+
+                <button type="submit" (click)="saveSocialMedia()" class="btn btn-primary">Save</button>
+            </div>
+            
+
+            <h1>Inquiries</h1>
+            <div *ngFor="let inquiry of inquiries">
+                <div>
+                    <span><b>Full Name:</b> {{inquiry.fullName}}</span><br>
+                    <span><b>Email:</b> {{inquiry.email}}</span><br>
+                    <span><b>Phone:</b> {{inquiry.phone}}</span><br>
+                    <span><b>Inquiry Type:</b> {{inquiry.inquiryType}}</span><br>
+                    <span><b>Message:</b> {{inquiry.message}}</span><br><br>
+                </div>
+            </div>        
+        </div>
+
+        <div *ngIf="!isAdmin">
+          <h1> 
+              Contact Us
+              <a type="submit" [attr.href]="socialMedias.facebook" target="_blank" class="btn btn-sm btn-primary">FB</a>
+              <a type="submit" [attr.href]="socialMedias.twitter" target="_blank" class="btn btn-sm btn-info">Twitter</a>
+              <a type="submit" [attr.href]="socialMedias.instagram" target="_blank" class="btn btn-sm btn-danger">IG</a>
+          </h1>
+          <h4>Please fill up the following form</h4>
+
+          <form role="form">
+
+            <fieldset class="form-group">
+                <input class="form-control" placeholder="Full Name" [(ngModel)]="newInquiry.fullName" name="fullName">
+            </fieldset>      
+
+            <fieldset class="form-group">
+              <input class="form-control" placeholder="Email" [(ngModel)]="newInquiry.email" name="email">
+            </fieldset>
+          
+            <fieldset class="form-group">
+              <input class="form-control" placeholder="Phone" [(ngModel)]="newInquiry.phone" name="phone">
+            </fieldset>      
+
+            <div class="form-group">
+              <select class="form-control" [(ngModel)]="newInquiry.inquiryType" name="inquiryType">
+                  <option value="" selected disabled>Inquiry Type [Please Select]</option>
+                  <option>Inquiry</option>
+                  <option>Order</option>
+                  <option>Comments</option>
+                  <option>Others</option>
+              </select>
+            </div>
+
+            <fieldset class="form-group">
+              <textarea class="form-control" rows="3" placeholder="Message" [(ngModel)]="newInquiry.message" name="message"></textarea>
+            </fieldset>
+
+            <button type="submit" (click)="submitInquiry()" class="btn btn-primary">Submit</button>
+            <br><br>
+          </form>  
+          
+          <div class="chat-box">
+            <div class="chat-header">
+                <b>Chat Box</b>
+                <button *ngIf="isChatOnline" type="submit" (click)="disconnectChat()" class="btn btn-sm btn-danger">disconnect</button>
+            </div>
+
+            <div class="chat-content">
+              <div *ngIf="messages.length === 0">
+                <br><br>
+                <p *ngIf="isPostDisconnection">Thank you for using our support chat box! :)</p>
+                <p>Please enter your email and fullname to start the converstation :)</p>
+              </div>
+
+              <div *ngFor="let message of messages">
+                <span><b>{{message.sender}}</b>: </span>
+                <span>{{message.text}}</span>
+              </div>              
+            </div>
+
+            <div *ngIf="!isChatOnline" class="row chat-message-form">
+                <div class="col col-sm-4">
+                    <input class="form-control" placeholder="Email" [(ngModel)]="newUser.email">
+                </div>
+                <div class="col col-sm-4">
+                    <input class="form-control" placeholder="Name" [(ngModel)]="newUser.name">
+                </div>              
+                <div class="col col-sm-4">
+                    <button type="submit" (click)="startChat()" class="btn btn-primary btn-block">Start Chat</button>
+                </div>
+            </div> 
+            
+            <div *ngIf="isChatOnline" class="row chat-message-form">
+                <div class="col col-sm-8">
+                    <input class="form-control" placeholder="Message" [(ngModel)]="message">
+                </div>
+                <div class="col col-sm-4">
+                    <button type="submit" (click)="sendChatMessage()" class="btn btn-primary btn-block">Send</button>
+                </div>
+            </div>      
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+</div>

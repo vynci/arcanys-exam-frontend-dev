@@ -1,0 +1,33 @@
+<div class="container main-view">
+  <div class="row">
+    <div class="col col-sm-12" style="text-align:center;">
+      <a routerLink="/"  class="btn btn-warning">Home</a>
+    </div>
+    <br><br>
+  </div>
+
+  <div *ngIf="messageBoxes.length === 0">
+    <p style="text-align:center;">You currently have no active chat boxes. If a customer (user) initiates a chat, it will display here.</p>
+  </div>
+  <div class="chat-box" *ngFor="let messageBox of messageBoxes">
+    <div class="chat-header">
+        <b>Chat Box ({{messageBox.customerName}} - {{messageBox.customerEmail}})</b>
+    </div>
+
+    <div class="chat-content">
+      <div *ngFor="let message of messages">
+        <span><b>{{message.sender}}</b>: </span>
+        <span>{{message.text}}</span>
+      </div>              
+    </div>
+    
+    <div class="row chat-message-form">
+        <div class="col col-sm-8">
+            <input class="form-control" placeholder="Message" [(ngModel)]="message">
+        </div>
+        <div class="col col-sm-4">
+            <button type="submit" (click)="sendChatMessage(messageBox.customerEmail)" class="btn btn-primary btn-block">Send</button>
+        </div>
+    </div>      
+  </div>  
+</div>

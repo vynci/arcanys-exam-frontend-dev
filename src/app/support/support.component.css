@@ -1,0 +1,21 @@
+.main-view {
+    padding-top: 30px;
+}
+
+.chat-header{
+    background: gray;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+}
+
+.chat-box {
+    margin-top: 20px;
+    border: 1px solid gray;
+    padding: 10px 10px;
+    overflow: scroll;
+}
+
+.chat-content {
+    height: 200px;
+}
